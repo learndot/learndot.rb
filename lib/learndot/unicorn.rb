@@ -8,46 +8,46 @@ module Learndot
 
     attr_accessor :learndot_url, :api_key
 
-    def self.learndot_url
-      @@learndot_url
+    def initialize(params = {})
+      @learndot_url = params[:learndot_url] || "#{params[:learndot_name]}.learndot.com"
+      @api_key= params[:api_key]
+      self.class.base_uri "https://#{@learndot_url}/api"
     end
-
-    def self.learndot_url=(url)
-      @@learndot_url = url
-    end
-
-    def self.api_key
-      @@api_key
-    end
-
-    def self.api_key=(key)
-      @@api_key = key
-    end
-
-    #def self.base_uri
-    #  "http://#{@@learndot_url}"
-    #end
 
     def options
       {
           :headers => {
-              'Authorization' => "learndotApiKey=#{@@api_key}"
+              'Authorization' => "learndotApiKey=#{@api_key}"
           }
       }
     end
 
-    def base_url
-      "http://#{@@learndot_url}/api/"
+    def get(url, options = self.options)
+      self.class.get(url, options)
     end
 
-    def url(url)
-      "#{base_url}/#{url}"
+    def post(url, record, options = self.options)
+      options[:body] = record.as_json(root: false)
+      self.class.post(url, options)
+    end
+
+    def handle_response(response)
+      case response.code
+        when 401
+          raise Errors::BadApiKeyError, 'You\'re API key appears to be invalid'
+        when 404
+          raise Errors::NotFoundError, 'That record is no where to be found'
+        when 500...600
+          puts "ZOMG ERROR #{response.code}"
+      end
     end
 
     def organization
-      attrs = self.class.get(url("organizations"), options)[0]
-      org = Organization.new(attrs)
+      response = get("/organizations")
+      handle_response(response)
+      org = Records::Organization.new(response[0])
       org.unicorn = self
+
       org
     end
 

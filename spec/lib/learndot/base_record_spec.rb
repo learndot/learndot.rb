@@ -1,6 +1,6 @@
 require_relative '../../spec_helper'
 
-class Test < Learndot::BaseRecord
+class Test < Learndot::Records::BaseRecord
   unicorn_attr :custom_attr
 end
 

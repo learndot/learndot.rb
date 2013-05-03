@@ -1,23 +1,32 @@
 require_relative '../../spec_helper'
 
-describe Learndot::Organization do
+describe Learndot::Records::Organization do
 
-  before(:all) do
-    @learndot_url = "localhost:8080"
-    Learndot::Unicorn.learndot_url = @learndot_url
-    Learndot::Unicorn.api_key = "VzpehxD3l6QtTvBNm8Bz1Qbz6_d8BcA6Ypo7KhNHRP0"
-    @unicorn = Learndot::Unicorn.new
-    @organization = Learndot::Unicorn.new.organization
+  before(:each) do
+    @unicorn = Learndot::Unicorn.new :learndot_url => TEST_URL, :api_key => TEST_API_KEY
+    @organization = @unicorn.organization
   end
 
-  #it "should generate the correct base uri" do
-  #  Learndot::Unicorn.base_uri.should eq "http://#{@learndot_url}"
+  it 'should validate presence of app_name' do
+    @organization.valid?.should be_true
+    @organization.app_name = ''
+    @organization.valid?.should be_false
+  end
+
+  it 'should validate presence of name' do
+    @organization.valid?.should be_true
+    @organization.name = ''
+    @organization.valid?.should be_false
+  end
+
+  it 'should validate presence of host_url' do
+    @organization.valid?.should be_true
+    @organization.host_url = ''
+    @organization.valid?.should be_false
+  end
+  #it "save it self" do
+  #  @organization.welcome_message = 'an test'
+  #  @organization.save
+  #  @unicorn.organization.welcome_message.should eq'an test'
   #end
-
-  it "save it self" do
-    @organization.welcome_message = 'an test'
-    @organization.save
-    @unicorn.organization.welcome_message.should be 'an test'
-  end
-
 end

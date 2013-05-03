@@ -2,8 +2,7 @@ require "learndot/version"
 require "httparty"
 
 module Learndot
-  autoload :BaseRecord, 'learndot/base_record'
-  autoload :UnicornRecord, 'learndot/unicorn_record'
-  autoload :Organization, 'learndot/organization'
+  autoload :Errors, 'learndot/errors'
+  autoload :Records, 'learndot/records'
   autoload :Unicorn, 'learndot/unicorn'
 end
