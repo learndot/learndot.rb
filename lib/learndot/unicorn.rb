@@ -17,38 +17,48 @@ module Learndot
     def options
       {
           :headers => {
-              'Authorization' => "learndotApiKey=#{@api_key}"
+              'Authorization' => "learndotApiKey=#{@api_key}",
+              'Content-Type' => 'application/json'
           }
       }
     end
 
     def get(url, options = self.options)
-      self.class.get(url, options)
+      handle_response_code(self.class.get(url, options))
     end
 
-    def post(url, record, options = self.options)
-      options[:body] = record.as_json(root: false)
-      self.class.post(url, options)
+    def post(record, options = self.options)
+      self.class.post(record.path, :body => record.as_json(root: false).to_json, :headers => options[:headers])
     end
 
-    def handle_response(response)
+    def put(record, options = self.options)
+      self.class.put(record.path, :body => record.as_json(root: false).to_json, :headers => options[:headers])
+    end
+
+    def delete(record, options = self.options)
+      self.class.delete(record.path, :headers => options[:headers])
+    end
+
+    def handle_response_code(response)
       case response.code
         when 401
-          raise Errors::BadApiKeyError, 'You\'re API key appears to be invalid'
+          raise Errors::BadApiKeyError, 'Your API key appears to be invalid'
+        when 403
+          raise Errors::NotAuthorizedError, 'You are not authorized to perform that action'
         when 404
           raise Errors::NotFoundError, 'That record is no where to be found'
         when 500...600
-          puts "ZOMG ERROR #{response.code}"
+          raise Errors::BadRequestError, 'Your request was improperly formatted'
       end
+
+      response
     end
 
+    # Gets the organization associated with this Unicorn instance
+    #
+    # @return [Organization] - the organization that maps to the provided API key
     def organization
-      response = get("/organizations")
-      handle_response(response)
-      org = Records::Organization.new(response[0])
-      org.unicorn = self
-
-      org
+      Records::Organization.find(self, :single => true)
     end
 
   end

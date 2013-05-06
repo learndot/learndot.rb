@@ -4,7 +4,7 @@ class Test < Learndot::Records::BaseRecord
   unicorn_attr :custom_attr
 end
 
-describe Learndot::BaseRecord do
+describe Learndot::Records::BaseRecord do
 
   before(:all) do
     @obj = Test.new

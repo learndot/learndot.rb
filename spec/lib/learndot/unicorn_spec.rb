@@ -5,9 +5,6 @@ describe Learndot::Unicorn do
   before(:all) do
     @learndot_url = TEST_URL
     @unicorn = Learndot::Unicorn.new :learndot_url => @learndot_url, :api_key => TEST_API_KEY
-
-
-
   end
 
   it 'should generate the correct base uri' do

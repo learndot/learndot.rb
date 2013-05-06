@@ -24,9 +24,4 @@ describe Learndot::Records::Organization do
     @organization.host_url = ''
     @organization.valid?.should be_false
   end
-  #it "save it self" do
-  #  @organization.welcome_message = 'an test'
-  #  @organization.save
-  #  @unicorn.organization.welcome_message.should eq'an test'
-  #end
 end
