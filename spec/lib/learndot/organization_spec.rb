@@ -24,4 +24,10 @@ describe Learndot::Records::Organization do
     @organization.host_url = ''
     @organization.valid?.should be_false
   end
+
+  it 'should destroy all its courses' do
+    @organization.courses.each do |course|
+     course.destroy!
+    end
+  end
 end

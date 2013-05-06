@@ -24,20 +24,27 @@ describe Learndot::Records::Course do
     @@last_id = new_course.id
   end
 
-  it "should allow updating a course" do
+  it 'should allow updating a course' do
     course= Learndot::Records::Course.find(@unicorn, id: @@last_id)
-    course.name = "A new an exciting name"
+    course.name = 'A new an exciting name'
     course.save
 
     new_course = Learndot::Records::Course.find(@unicorn, id: course.id)
     new_course.name.should eq course.name
   end
 
+  it 'should belong to an organization' do
+    course= Learndot::Records::Course.find(@unicorn, id: @@last_id)
 
-  it "should allow deleting of a course" do
+    course.organization.id.should eq @organization.id
+  end
+
+
+  it 'should allow deleting of a course' do
     course= Learndot::Records::Course.find(@unicorn, id: @@last_id)
     course.destroy!
 
+    course.destroyed?.should eq true
     expect{ Learndot::Records::Course.find(@unicorn, id: course.id)}.to raise_error(Learndot::Errors::NotAuthorizedError)
   end
 end
