@@ -31,6 +31,10 @@ module Learndot
         self
       end
 
+      def save!
+        save
+      end
+
       def destroy!
         if persisted?
           unicorn.delete(self)
@@ -87,6 +91,12 @@ module Learndot
         args.each do |arg|
           self.send(:define_method, arg) do
             Learndot::Records.const_get(arg.to_s.classify).send(:find, self.unicorn, :id => self.send("#{arg}_id"))
+          end
+        end
+
+        args.each do |arg|
+          self.send(:define_method, "#{arg}=") do |value|
+            self.send("#{arg}_id=",value.id)
           end
         end
       end

@@ -1,6 +1,6 @@
 # Learndot
 
-TODO: Write a gem description
+An object wrapper for our HTTP API
 
 ## Installation
 
@@ -18,7 +18,63 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Create a unicorn object
+
+```ruby
+
+# use this syntax if your learndot url is of the form mycompany.learndot.com
+unicorn = Unicorn.new :learndot_name => 'my-company', :api_key => 'my-api-key'
+
+# use this syntax if your learndot url is of the form learn.mycompany.com or some other custom domain
+unicorn = Unicorn.new :learndot_url => 'learn.mycompany.com', :api_key => 'my-api-key'
+```
+
+You can then access your organization and courses as follows:
+
+```ruby
+
+unicorn.organization # Your organization
+
+organization.courses # All courses in your learndot
+
+Course.find(unicorn) # All courses in your learndot
+
+Course.find(5)       # A specific course in your learndot
+
+```
+
+You can also remotely create courses
+
+```ruby
+
+course = Course.new(unicorn)
+course.organization = unicorn.organization
+course.name = 'My Course Name'
+course.description = '<p>My Greate Course</p>'
+course.save!
+
+```
+
+Update them:
+
+```ruby
+
+course = Course.find(unicorn, 1)
+course.name = 'My New Name'
+course.description = '<p>My Greate Course</p>'
+course.save!
+
+```
+
+
+Destroy them:
+
+```ruby
+
+course = Course.find(unicorn, 1)
+course.destroy!
+
+```
 
 ## Contributing
 

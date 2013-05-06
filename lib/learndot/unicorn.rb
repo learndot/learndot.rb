@@ -4,6 +4,7 @@ module Learndot
   class Unicorn
 
     include HTTParty
+    persistent_connection_adapter
     format :json
 
     attr_accessor :learndot_url, :api_key

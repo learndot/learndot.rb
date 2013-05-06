@@ -37,6 +37,11 @@ describe Learndot::Records::Course do
     course= Learndot::Records::Course.find(@unicorn, id: @@last_id)
 
     course.organization.id.should eq @organization.id
+
+    new_course= Learndot::Records::Course.new(@unicorn)
+    new_course.organization = @organization
+
+    new_course.organization_id.should eq @organization.id
   end
 
 
