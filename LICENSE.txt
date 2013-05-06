@@ -1,4 +1,4 @@
-Copyright (c) 2013 Joe Gaudet
+Copyright (c) 2013 Matygo Matygo Educational Incorporated operating as Learndot
 
 MIT License
 
