@@ -5,6 +5,14 @@ module Learndot
       unicorn_has_many :courses
 
       validates_presence_of :app_name, :name, :host_url
+
+      def add_user(user)
+        unicorn.post('/organizationRole', {userId: user.id, organizationId: self.id, organizationRole: 'User'})
+      end
+
+      def add_admin(user)
+        unicorn.post('/organizationRole', {userId: user.id, organizationId: self.id, organizationRole: 'Admin'})
+      end
     end
   end
 end

@@ -2,7 +2,7 @@ require_relative '../../spec_helper'
 
 describe Learndot::Records::Course do
 
-  before(:each) do
+  before(:all) do
     @unicorn = Learndot::Unicorn.new :learndot_url => TEST_URL, :api_key => TEST_API_KEY
     @organization = @unicorn.organization
   end

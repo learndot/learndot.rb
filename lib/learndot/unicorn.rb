@@ -28,28 +28,40 @@ module Learndot
       handle_response_code(self.class.get(url, options))
     end
 
-    def post(record, options = self.options)
-      self.class.post(record.path, :body => record.as_json(root: false).to_json, :headers => options[:headers])
+    def post_record(record, options =self.options)
+      self.post(record.path, record.as_json(root: false), options)
     end
 
-    def put(record, options = self.options)
-      self.class.put(record.path, :body => record.as_json(root: false).to_json, :headers => options[:headers])
+    def post(path, body, options = self.options)
+      self.class.post(path, :body => body.to_json, :headers => options[:headers])
     end
 
-    def delete(record, options = self.options)
+    def put_record(record, options =self.options)
+      self.put(record.path, record.as_json(root: false), options)
+    end
+
+    def put(path, body, options = self.options)
+      self.class.put(path, :body => body.to_json, :headers => options[:headers])
+    end
+
+    def delete_record(record, options = self.options)
       self.class.delete(record.path, :headers => options[:headers])
+    end
+
+    def delete(path, options = self.options)
+      self.class.delete(path, :headers => options[:headers])
     end
 
     def handle_response_code(response)
       case response.code
+        when 500
+          raise Errors::BadRequestError, 'Your request was improperly formatted'
         when 401
           raise Errors::BadApiKeyError, 'Your API key appears to be invalid'
         when 403
           raise Errors::NotAuthorizedError, 'You are not authorized to perform that action'
         when 404
           raise Errors::NotFoundError, 'That record is no where to be found'
-        when 500...600
-          raise Errors::BadRequestError, 'Your request was improperly formatted'
       end
 
       response
