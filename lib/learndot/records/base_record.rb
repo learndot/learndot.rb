@@ -15,7 +15,12 @@ module Learndot
       attr_accessor :attribute
 
       def initialize(attributes = {})
-        self.attributes = attributes
+        attrs = {}
+        attributes.each do |key, value|
+          attrs[key.to_s.camelize(:lower)] = value
+        end
+
+        self.attributes = attrs
       end
 
       def read_attribute_for_validation(key)

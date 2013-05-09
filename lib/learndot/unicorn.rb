@@ -10,10 +10,16 @@ module Learndot
     attr_accessor :learndot_url, :api_key
 
     def initialize(params = {})
-      @learndot_url = params[:learndot_url] || "#{params[:learndot_name]}.learndot.com"
-      @api_key= params[:api_key]
-      self.class.base_uri "https://#{@learndot_url}/api"
+      local = params[:local]
+
+      @learndot_url = !local ? params[:learndot_url] || "#{params[:learndot_name]}.learndot.com" : 'localhost:8080'
+      @api_key= local ? 'learndot' : params[:api_key]
+      @protocol = local ? 'http' : 'https'
+      postfix = local ? '' : api
+
+      self.class.base_uri "#{@protocol}://#{@learndot_url}/#{postfix}"
     end
+
 
     def options
       {
