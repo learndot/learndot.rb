@@ -1,7 +1,7 @@
 module Learndot
   module Records
     class Concept < UnicornRecord
-      unicorn_attr :name, :description, :courses
+      unicorn_attr :name, :description, :courses, :learning_objective, :is_exam
       unicorn_has_many :course
 
       validates_presence_of :name, :description
