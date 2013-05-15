@@ -5,8 +5,7 @@ module Learndot
 
       unicorn_belongs_to :organization
       unicorn_has_many :concepts
-
-      #unicorn_has_many :users, :as => :students
+      unicorn_has_many :users, :as => :students
       #unicorn_has_many :users, :as => :instructors
 
       validates_presence_of :name, :description
