@@ -36,6 +36,7 @@ module Learndot
             self.attributes = unicorn.put_record(self)
           else
             self.attributes = unicorn.post_record(self)
+            self.persisted = true
           end
         end
 

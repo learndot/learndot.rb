@@ -51,7 +51,7 @@ module Learndot
     end
 
     def delete_record(record, options = self.options)
-      self.class.delete(record.path, :headers => options[:headers])
+      self.delete(record.path, :headers => options[:headers])
     end
 
     def delete(path, options = self.options)
