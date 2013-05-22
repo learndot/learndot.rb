@@ -76,7 +76,7 @@ module Learndot
       # @param query [String] an optional query string to be appended to the path
       # @return [String] the path for this particular record
       def self.path(query=nil)
-        path = "/#{name.demodulize.downcase.pluralize}"
+        path = "/#{name.demodulize.camelize(:lower).pluralize}"
         path += "?#{query}" unless query.nil?
 
         path
@@ -120,7 +120,7 @@ module Learndot
       # @option opts [Symbol] :as the name of the method for accessing this relationship
       def self.unicorn_has_many(arg, opts = {})
         self.send(:define_method, opts[:as] || arg) do
-          Learndot::Records.const_get(arg.to_s.singularize.classify).send(:find, self.unicorn, :query => "#{self.class.name.demodulize.downcase}Id=#{self.id}")
+          Learndot::Records.const_get(arg.to_s.singularize.classify).send(:find, self.unicorn, :query => "#{self.class.name.demodulize.camelize(:lower)}Id=#{self.id}")
         end
       end
 

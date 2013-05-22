@@ -6,5 +6,7 @@ module Learndot
     autoload :UnicornRecord, 'learndot/records/unicorn_record'
     autoload :User, 'learndot/records/user'
     autoload :Organization, 'learndot/records/organization'
+    autoload :FreeFormQuestion, 'learndot/records/free_form_question'
+    autoload :SelfAssessmentResponse, 'learndot/records/self_assessment_response'
   end
 end
