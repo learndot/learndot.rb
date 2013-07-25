@@ -3,7 +3,10 @@ require_relative '../../spec_helper'
 describe Learndot::Records::User do
 
   before(:each) do
-    @unicorn = Learndot::Unicorn.new :learndot_url => TEST_URL, :api_key => TEST_API_KEY
+    @unicorn = Learndot::Unicorn.new :local => true
+
+    puts @unicorn.class.base_uri
+
     @organization = @unicorn.organization
   end
 

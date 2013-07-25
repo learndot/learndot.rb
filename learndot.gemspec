@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = 'https://github.com/learndot/learndot.rb'
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables  = ['dump_assessment']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'json', ' ~> 1.7.7'
   gem.add_runtime_dependency 'rails'
+  gem.add_runtime_dependency 'trollop'
   gem.add_runtime_dependency 'httparty'
   gem.add_runtime_dependency 'persistent_httparty'
 

@@ -15,9 +15,8 @@ module Learndot
       @learndot_url = !local ? params[:learndot_url] || "#{params[:learndot_name]}.learndot.com" : 'localhost:8080'
       @api_key= local ? 'learndot' : params[:api_key]
       @protocol = local ? 'http' : 'https'
-      postfix = local ? '' : 'api'
 
-      self.class.base_uri "#{@protocol}://#{@learndot_url}/#{postfix}"
+      self.class.base_uri "#{@protocol}://#{@learndot_url}/api"
     end
 
 
