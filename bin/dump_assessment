@@ -13,15 +13,13 @@ opts = Trollop::options do
   opt :output_file, "the path to an output file", :type => :string
 end
 
-unicorn = nil
-
 if !opts[:run_locally]
   if !opts[:api_key] || !opts[:url]
     puts 'You must provide an API key and a learndot url to run in non local mode.'
     exit
   end
 
-  p "Running Against #{opts[:url]}"
+  p "Running Against #{opts[:url]} with API key '#{opts[:api_key]}'"
 
   unicorn = Learndot::Unicorn.new :learndot_url => opts[:url], :api_key => opts[:api_key]
 else
@@ -30,14 +28,9 @@ else
 end
 
 if opts[:concept_id]
-  p opts[:concept_id]
   concept = Learndot::Records::Concept.find(unicorn, :id => opts[:concept_id])
-  if opts[:output_file]
-    output_file = File.open(opts[:output_file], 'w')
-    output_file.write(concept.describe_assessment_as_json)
-  else
-    p concept.describe_assessment_as_json
-  end
+  output_file = File.open(opts[:output_file] || "concept-#{concept.id}.json", 'w')
+  output_file.write(concept.describe_assessment_as_json)
 else
   p "You didn't tell me what concept you want to print"
 end

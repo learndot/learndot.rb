@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = 'https://github.com/learndot/learndot.rb'
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables  = ['dump_assessment']
+  gem.executables  = ['dump_assessment', 'update_assessment']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 

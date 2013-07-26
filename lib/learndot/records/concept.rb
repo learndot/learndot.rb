@@ -52,6 +52,7 @@ module Learndot
           attrs.delete("errors")
           attrs.delete("createdOn")
           attrs.delete("updatedOn")
+          attrs.delete("responseIds")
 
           if !attrs.has_key? "consideration"
             attrs["consideration"] = ""
@@ -69,15 +70,13 @@ module Learndot
       def self.from_file(unicorn, file)
         obj = JSON.parse(file)
 
-        concept = find unicorn, :id => obj["conceptId"].to_i
+        concept = find unicorn, :id => obj["conceptId"]
         assessment = concept.assessment
 
         mcqs = obj["multipleChoiceQuestions"]
         ffqs = obj["freeFormQuestions"]
 
         mcqs.each do |question|
-          mcq = nil
-
           if question.has_key? "id"
             mcq = MultipleChoiceQuestion.find unicorn, :id => question["id"]
             puts "Updating Mutiple Choice Question [#{mcq.id}]"
@@ -92,11 +91,9 @@ module Learndot
           puts "Saved - #{mcq.id}"
 
           question["choices"].each do |choice|
-            mcqc = nil
-
             if choice.has_key? "id"
               puts "Updating Multiple Choice Question Choice #{choice["id"]}"
-              mcqc = MultipleChoiceQuestionChoice.find unicorn, :id => question["id"]
+              mcqc = MultipleChoiceQuestionChoice.find unicorn, :id => choice["id"]
               mcqc.answer = choice["answer"]
               mcqc.is_correct = choice["isCorrect"]
               mcqc.justification = choice["justification"]
@@ -112,22 +109,24 @@ module Learndot
         end
 
         ffqs.each do |question|
-          ffq = nil
 
           if question.has_key? "id"
             ffq = FreeFormQuestion.find unicorn, :id => question["id"]
-            puts "Updating Mutiple Choice Question [#{ffq.id}]"
+            puts "Updating Free Form Question [#{ffq.id}]"
             ffq.question = question["question"]
+            p "Setting Consideration #{question["consideration"]}"
             ffq.consideration = question["consideration"]
           else
-            puts "Creating new Mutple Choice Question #{question["question"]}"
+            puts "Creating new Free Form Question #{question["question"]}"
             ffq = FreeFormQuestion.new unicorn, :question => question["question"], :consideration => question["consideration"]
-            ffq.assessment = assessment
-            ffq.concept = concept
           end
 
+          ffq.assessment = assessment
+          ffq.concept = concept
           ffq.save!
         end
+
+        concept
       end
     end
   end
