@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
 
-  gem.add_runtime_dependency 'json', ' ~> 1.7.7'
+  gem.add_runtime_dependency 'json', ' ~> 1.8.0'
   gem.add_runtime_dependency 'rails'
   gem.add_runtime_dependency 'trollop'
   gem.add_runtime_dependency 'httparty'
