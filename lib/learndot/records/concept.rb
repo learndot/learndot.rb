@@ -1,7 +1,8 @@
 module Learndot
   module Records
     class Concept < UnicornRecord
-      unicorn_attr :name, :description, :courses, :assessments, :learning_objective, :is_exam, :self_assessment_responses
+      unicorn_attr :name, :description, :courses, :assessments, :learning_objective, :is_exam,
+                   :self_assessment_responses, :course_id, :is_draft
       unicorn_has_many :courses
       unicorn_has_many :assessments
 
@@ -15,7 +16,20 @@ module Learndot
         assessments.first
       end
 
-      def describe_assessment_as_json
+      # Creates a new record with nil id
+      # and a copy of the concept assessment
+      def deep_copy(unicorn)
+        assessment = deep_copy_assessment
+        attributes["multipleChoiceQuestions"] = assessment["multipleChoiceQuestions"]
+        attributes["freeFormQuestions"] = assessment["freeFormQuestions"]
+        attributes["dependencyIds"] = []
+        attributes["dependentIds"] = []
+        attributes["id"] = nil
+
+        Learndot::Records::Concept.new(unicorn, attributes)
+      end
+
+      def deep_copy_assessment
 
         buffer = {}
         ffqs = []
@@ -64,7 +78,11 @@ module Learndot
         buffer["multipleChoiceQuestions"] = mcqs
         buffer["freeFormQuestions"] = ffqs
 
-        JSON.pretty_generate(buffer)
+        buffer
+      end
+
+      def describe_as_json
+        JSON.pretty_generate(deep_copy_assessment)
       end
 
       def self.from_file(unicorn, file)

@@ -65,7 +65,6 @@ module Learndot
       def path(query=nil)
         path = self.class.path(query)
         path += "/#{id}" unless not persisted?
-
         path
       end
 
@@ -100,7 +99,6 @@ module Learndot
           result.persisted = true
         else
           result = []
-
           unicorn.get(self.path(opts[:query])).each do |record|
             local_record = self.new(unicorn, record)
             local_record.persisted = true

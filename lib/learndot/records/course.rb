@@ -1,7 +1,7 @@
 module Learndot
   module Records
     class Course < UnicornRecord
-      unicorn_attr :name, :description, :learning_objective, :organization_id, :custom_order, :students, :instructors, :free_form_questions
+      unicorn_attr :name, :description, :learning_objective, :is_draft, :organization_id, :custom_order, :students, :instructors, :free_form_questions
 
       unicorn_belongs_to :organization
       unicorn_has_many :concepts

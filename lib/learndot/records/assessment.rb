@@ -9,7 +9,6 @@ module Learndot
       unicorn_has_many :free_form_questions
       unicorn_has_many :self_assessment_responses
       unicorn_has_many :multiple_choice_questions
-
     end
   end
 end
